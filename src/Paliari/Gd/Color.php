@@ -2,6 +2,10 @@
 
 namespace Paliari\Gd;
 
+/**
+ * Class Color
+ * @package Paliari\Gd
+ */
 class Color
 {
 

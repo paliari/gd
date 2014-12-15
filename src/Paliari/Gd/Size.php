@@ -46,7 +46,7 @@ class Size
      *
      * @return Size
      */
-    public function fit(Size $target)
+    public function fit($target)
     {
         if ($this->getRatio() > $target->getRatio()) {
             $width  = $target->width;
