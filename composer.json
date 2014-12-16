@@ -1,0 +1,25 @@
+{
+    "name": "paliari/gd",
+    "type": "library",
+    "description": "GD Wrapper",
+    "keywords": [
+        "gd",
+        "image",
+        "thumbnail"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcos Paliari",
+            "homepage": "http://www.paliari.com.br"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "Paliari\\": "src"
+        }
+    }
+}
