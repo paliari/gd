@@ -114,8 +114,38 @@ class ImageFacade
     }
 
     /**
-     * @param        $w
-     * @param        $h
+     * @param int  $w
+     * @param int  $h
+     * @param bool $ln
+     */
+    protected function nextPoint($w, $h, $ln = true)
+    {
+        $p    = $this->getCurrentPoint();
+        $p->x = $p->x + $w;
+        if ($ln) {
+            $p->x = 0;
+            $p->y = $p->y + $h;
+        }
+        $this->setCurrentPoint($p);
+    }
+
+    /**
+     * @param int $w
+     *
+     * @return int
+     */
+    protected function prepareWidth($w)
+    {
+        if (!$w) {
+            $w = $this->getImage()->getSize()->width - $this->getCurrentPoint()->x;
+        }
+
+        return $w;
+    }
+
+    /**
+     * @param int    $w
+     * @param int    $h
      * @param string $text
      * @param bool   $border
      * @param bool   $ln
@@ -125,9 +155,7 @@ class ImageFacade
     public function cell($w, $h, $text = '', $border = false, $ln = false)
     {
         $p = $this->getCurrentPoint();
-        if (!$w) {
-            $w = $this->getImage()->getSize()->width - $p->x;
-        }
+        $w = $this->prepareWidth($w);
         if ($border) {
             $this->getImage()->rectangle(new Rect(new Size($w, $h), $this->current_point));
         }
@@ -141,14 +169,90 @@ class ImageFacade
                  )
             ;
         }
-        $p->x = $p->x + $w;
-        if ($ln) {
-            $p->x = 0;
-            $p->y = $p->y + $h;
-        }
-        $this->setCurrentPoint($p);
+        $this->nextPoint($w, $h, $ln);
 
         return $this;
+    }
+
+    /**
+     * @param int    $w
+     * @param string $text
+     * @param bool   $border
+     *
+     * @return $this
+     */
+    public function multCell($w, $text, $border = false)
+    {
+        $p    = $this->getCurrentPoint();
+        $w    = $this->prepareWidth($w);
+        $text = $this->prepareText($text, $w);
+        $size = $this->getTextSize($text);
+        $h    = $size['h'] + $this->getCellPadding() * 2;
+        if ($border) {
+            $this->getImage()->rectangle(new Rect(new Size($w, $h), $this->current_point));
+        }
+        if ($text) {
+            $this->getImage()
+                 ->text($text,
+                     new Point($p->x + $this->getCellPadding(), $p->y + $this->getFontSize() + $this->getCellPadding()),
+                     $this->getFont(),
+                     $this->getFontSize(),
+                     $this->getFontColor()
+                 )
+            ;
+        }
+        $this->nextPoint($w, $h);
+
+        return $this;
+    }
+
+    /**
+     * @param string $text
+     * @param int    $w
+     *
+     * @return string
+     */
+    protected function prepareText($text, $w)
+    {
+        $lines = explode("\n", $text);
+        foreach ($lines as $k => $line) {
+            $lines[$k] = $this->prepareTextLine($line, $w);
+        }
+
+        return implode("\n", $lines);
+    }
+
+    /**
+     * @param string $text
+     * @param int    $w
+     *
+     * @return string
+     */
+    protected function prepareTextLine($text, $w)
+    {
+        $text = trim($text);
+        $size = $this->getTextSize($text);
+        $len  = strlen($text) ?: 1;
+        $wx   = ($size['w'] / $len) ?: 1;
+        $tw   = floor(($w - $this->getCellPadding() * 2) / $wx);
+
+        return wordwrap($text, $tw, "\n", true);
+    }
+
+    /**
+     * Obtem um array com a largura ['w'] e altura['h'] do texto alem dos index nativos do php.
+     *
+     * @param string $text
+     *
+     * @return array
+     */
+    protected function getTextSize($text)
+    {
+        $size      = imagettfbbox($this->getFontSize(), 0, $this->getFont(), $text);
+        $size['w'] = $size[2] - $size[0];
+        $size['h'] = $size[1] - $size[7];
+
+        return $size;
     }
 
     /**
