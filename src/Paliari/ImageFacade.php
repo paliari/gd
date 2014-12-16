@@ -56,7 +56,7 @@ class ImageFacade
     {
         $this->font_path     = dirname(dirname(__DIR__)) . '/font';
         $this->current_point = new Point();
-        $this->font_color    = new Color(50, 50, 50);
+        $this->font_color    = new Color();
         $this->setFont('arial');
     }
 
@@ -125,6 +125,9 @@ class ImageFacade
     public function cell($w, $h, $text = '', $border = false, $ln = false)
     {
         $p = $this->getCurrentPoint();
+        if (!$w) {
+            $w = $this->getImage()->getSize()->width - $p->x;
+        }
         if ($border) {
             $this->getImage()->rectangle(new Rect(new Size($w, $h), $this->current_point));
         }
