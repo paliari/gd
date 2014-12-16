@@ -379,7 +379,14 @@ class Image
     public function text($text, $point, $font, $font_size, $color = null, $angle = 0)
     {
         $color = $color ?: $this->dark;
-        imagettftext($this->res, $font_size, $angle, $point->x, $point->y, $color->toInt(), $font, $text);
+        imagettftext($this->res,
+            $font_size,
+            $angle,
+            $point->x,
+            $point->y,
+            $color->toInt(),
+            $font,
+            $text);
 
         return $this;
     }
