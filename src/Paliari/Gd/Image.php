@@ -262,7 +262,7 @@ class Image
      */
     public function resample($size)
     {
-        return $this->copyResampled(new static($size, $this->ext));
+        return $this->copyResampledPart(new static($size, $this->ext));
     }
 
     /**
@@ -420,9 +420,38 @@ class Image
     public function margin($border = 2, $color = null)
     {
         $color = $color ?: $this->dark;
-        imagesetthickness($this->res, $border);
+        $this->setLineSize($border);
         imagerectangle($this->res, $border / 2, $border / 2, $this->size->width - $border / 2, $this->size->height - $border / 2, $color->toInt());
-        imagesetthickness($this->res, 1);
+        $this->setLineSize(1);
+
+        return $this;
+    }
+
+    /**
+     * @param Point $p1
+     * @param Point $p2
+     * @param Color $color
+     *
+     * @return $this
+     */
+    public function line($p1, $p2, $color = null)
+    {
+        $color = $color ?: $this->dark;
+        imageline($this->res, $p1->x, $p1->y, $p2->x, $p2->y, $color->toInt());
+
+        return $this;
+    }
+
+    /**
+     * Set line and border size.
+     *
+     * @param int $size in pixels
+     *
+     * @return $this
+     */
+    public function setLineSize($size)
+    {
+        imagesetthickness($this->res, $size);
 
         return $this;
     }
