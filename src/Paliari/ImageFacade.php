@@ -231,8 +231,8 @@ class ImageFacade
     protected function prepareTextLine($text, $w)
     {
         $text = trim($text);
-        $size = $this->getTextSize($text);
         $len  = strlen($text) ?: 1;
+        $size = $this->getTextSize($text);
         $wx   = ($size['w'] / $len) ?: 1;
         $tw   = floor(($w - $this->getCellPadding() * 2) / $wx);
 
@@ -352,6 +352,30 @@ class ImageFacade
     public function setCellPadding($cell_padding)
     {
         $this->cell_padding = $cell_padding;
+    }
+
+    /**
+     * @param int $x
+     *
+     * @return $this
+     */
+    public function setX($x)
+    {
+        $this->current_point->x = $x;
+
+        return $this;
+    }
+
+    /**
+     * @param int $y
+     *
+     * @return $this
+     */
+    public function setY($y)
+    {
+        $this->current_point->y = $y;
+
+        return $this;
     }
 
 }
