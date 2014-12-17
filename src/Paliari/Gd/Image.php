@@ -262,7 +262,7 @@ class Image
      */
     public function resample($size)
     {
-        return $this->copyResampled(new static($size, $this->ext));
+        return $this->copyResampledPart(new static($size, $this->ext));
     }
 
     /**
