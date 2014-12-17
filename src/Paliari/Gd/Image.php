@@ -427,4 +427,19 @@ class Image
         return $this;
     }
 
+    /**
+     * @param Point $p1
+     * @param Point $p2
+     * @param Color $color
+     *
+     * @return $this
+     */
+    public function line($p1, $p2, $color = null)
+    {
+        $color = $color ?: $this->dark;
+        imageline($this->res, $p1->x, $p1 - y, $p2->x, $p2->y, $color->toInt());
+
+        return $this;
+    }
+
 }
