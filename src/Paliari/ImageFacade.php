@@ -378,4 +378,25 @@ class ImageFacade
         return $this;
     }
 
+    /**
+     * @param string $text
+     * @param int    $x
+     * @param int    $y
+     *
+     * @return $this
+     */
+    public function text($text, $x = null, $y = null)
+    {
+        if ($x instanceof Point) {
+            $point = $x;
+        } else {
+            $x     = null === $x ? $this->getCurrentPoint()->x : $x;
+            $y     = null === $y ? $this->getCurrentPoint()->y : $y;
+            $point = new Point($x, $y);
+        }
+        $this->getImage()->text($text, $point, $this->getFont(), $this->getFontSize(), $this->getFontColor());
+
+        return $this;
+    }
+
 }
