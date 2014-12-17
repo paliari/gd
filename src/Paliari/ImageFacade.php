@@ -515,4 +515,18 @@ class ImageFacade
         return $this;
     }
 
+    /**
+     * Set line and border size.
+     *
+     * @param int $size in pixels
+     *
+     * @return $this
+     */
+    public function setLineSize($size)
+    {
+        $this->getImage()->setLineSize($size);
+
+        return $this;
+    }
+
 }
