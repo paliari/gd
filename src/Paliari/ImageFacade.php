@@ -421,6 +421,27 @@ class ImageFacade
     }
 
     /**
+     * @param int|Point $x1
+     * @param int|Point $y1
+     * @param int       $x2
+     * @param int       $y2
+     *
+     * @return $this
+     */
+    public function line($x1, $y1, $x2 = null, $y2 = null)
+    {
+        $p1 = $this->preparePoint($x1, $y1);
+        if ($y1 instanceof Point) {
+            $p2 = $y1;
+        } else {
+            $p2 = $this->preparePoint($x2, $y2);
+        }
+        $this->getImage()->line($p1, $p2, $this->getFontColor());
+
+        return $this;
+    }
+
+    /**
      * @param Image|string $src
      * @param int|Point    $x
      * @param int          $y
