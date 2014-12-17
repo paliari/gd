@@ -437,7 +437,7 @@ class Image
     public function line($p1, $p2, $color = null)
     {
         $color = $color ?: $this->dark;
-        imageline($this->res, $p1->x, $p1 - y, $p2->x, $p2->y, $color->toInt());
+        imageline($this->res, $p1->x, $p1->y, $p2->x, $p2->y, $color->toInt());
 
         return $this;
     }
