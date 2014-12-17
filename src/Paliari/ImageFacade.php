@@ -472,4 +472,19 @@ class ImageFacade
         return $this;
     }
 
+    /**
+     * Saves image to a file
+     *
+     * @param string $file
+     * @param int    $quality
+     *
+     * @return $this
+     */
+    public function save($file, $quality = 75)
+    {
+        $this->getImage()->save($file, $quality);
+
+        return $this;
+    }
+
 }
