@@ -457,4 +457,19 @@ class ImageFacade
         }
     }
 
+    /**
+     * Send image to the browser with appropriated headers
+     *
+     * @param string $ext
+     * @param int    $quality
+     *
+     * @return $this
+     */
+    public function flush($ext = null, $quality = 75)
+    {
+        $this->getImage()->flush($ext, $quality);
+
+        return $this;
+    }
+
 }
