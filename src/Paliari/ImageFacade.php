@@ -367,6 +367,14 @@ class ImageFacade
     }
 
     /**
+     * @return int
+     */
+    public function getX()
+    {
+        return $this->getCurrentPoint()->x;
+    }
+
+    /**
      * @param int $y
      *
      * @return $this
@@ -376,6 +384,13 @@ class ImageFacade
         $this->current_point->y = $y;
 
         return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getY()
+    {
+        return $this->getCurrentPoint()->y;
     }
 
     /**
