@@ -406,9 +406,9 @@ class ImageFacade
     }
 
     /**
-     * @param string $text
-     * @param int    $x
-     * @param int    $y
+     * @param string    $text
+     * @param int|Point $x
+     * @param int       $y
      *
      * @return $this
      */
@@ -422,7 +422,7 @@ class ImageFacade
 
     /**
      * @param Image|string $src
-     * @param int          $x
+     * @param int|Point    $x
      * @param int          $y
      *
      * @return $this
