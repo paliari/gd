@@ -76,9 +76,20 @@ class ImageFacade
      */
     public static function create($width, $height)
     {
-        static::instance()->setImage(new Image($width, $height));
+        static::instance()->setImage(static::newImage($width, $height));
 
         return static::instance();
+    }
+
+    /**
+     * @param int|resource|Image|array|string $width
+     * @param int                             $height
+     *
+     * @return Image
+     */
+    public static function newImage($width, $height = null)
+    {
+        return new Image($width, $height);
     }
 
     /**
@@ -231,8 +242,8 @@ class ImageFacade
     protected function prepareTextLine($text, $w)
     {
         $text = trim($text);
-        $size = $this->getTextSize($text);
         $len  = strlen($text) ?: 1;
+        $size = $this->getTextSize($text);
         $wx   = ($size['w'] / $len) ?: 1;
         $tw   = floor(($w - $this->getCellPadding() * 2) / $wx);
 
@@ -352,6 +363,170 @@ class ImageFacade
     public function setCellPadding($cell_padding)
     {
         $this->cell_padding = $cell_padding;
+    }
+
+    /**
+     * @param int $x
+     *
+     * @return $this
+     */
+    public function setX($x)
+    {
+        $this->current_point->x = $x;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getX()
+    {
+        return $this->getCurrentPoint()->x;
+    }
+
+    /**
+     * @param int $y
+     *
+     * @return $this
+     */
+    public function setY($y)
+    {
+        $this->current_point->y = $y;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getY()
+    {
+        return $this->getCurrentPoint()->y;
+    }
+
+    /**
+     * @param string    $text
+     * @param int|Point $x
+     * @param int       $y
+     *
+     * @return $this
+     */
+    public function text($text, $x = null, $y = null)
+    {
+        $point = $this->preparePoint($x, $y);
+        $this->getImage()->text($text, $point, $this->getFont(), $this->getFontSize(), $this->getFontColor());
+
+        return $this;
+    }
+
+    /**
+     * @param int $x1
+     * @param int $y1
+     * @param int $x2
+     * @param int $y2
+     *
+     * @return $this
+     */
+    public function line($x1, $y1, $x2, $y2)
+    {
+        $p1 = $this->newPoint($x1, $y1);
+        $p2 = $this->newPoint($x2, $y2);
+        $this->getImage()->line($p1, $p2, $this->getFontColor());
+
+        return $this;
+    }
+
+    /**
+     * @param Image|string $src
+     * @param int|Point    $x
+     * @param int          $y
+     *
+     * @return $this
+     */
+    public function copyResampled($src, $x = null, $y = null)
+    {
+        if (is_string($src)) {
+            $src = $this->newImage($src);
+        }
+        $point = $this->preparePoint($x, $y);
+        $this->getImage()->copyResampled($src, $point);
+
+        return $this;
+    }
+
+    /**
+     * @param int|Point $x
+     * @param int       $y
+     *
+     * @return Point
+     */
+    protected function preparePoint($x, $y)
+    {
+        if ($x instanceof Point) {
+            return $x;
+        } else {
+            $x     = null === $x ? $this->getCurrentPoint()->x : $x;
+            $y     = null === $y ? $this->getCurrentPoint()->y : $y;
+            $point = $this->newPoint($x, $y);
+
+            return $point;
+        }
+    }
+
+    /**
+     * @param int $x
+     * @param int $y
+     *
+     * @return Point
+     */
+    public function newPoint($x = 0, $y = 0)
+    {
+        return new Point($x, $y);
+    }
+
+    /**
+     * Send image to the browser with appropriated headers
+     *
+     * @param string $ext
+     * @param int    $quality
+     *
+     * @return $this
+     */
+    public function flush($ext = null, $quality = 75)
+    {
+        $this->getImage()->flush($ext, $quality);
+
+        return $this;
+    }
+
+    /**
+     * Saves image to a file
+     *
+     * @param string $file
+     * @param int    $quality
+     *
+     * @return $this
+     */
+    public function save($file, $quality = 75)
+    {
+        $this->getImage()->save($file, $quality);
+
+        return $this;
+    }
+
+    /**
+     * Set line and border size.
+     *
+     * @param int $size in pixels
+     *
+     * @return $this
+     */
+    public function setLineSize($size)
+    {
+        $this->getImage()->setLineSize($size);
+
+        return $this;
     }
 
 }
