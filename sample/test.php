@@ -76,6 +76,8 @@ $f->setFont('arial');
 
 $f->setFontSize(15)->multCell(0, $text, true);
 
+$f->text('volutpat, sapien id eleifend consequat, magna odio ultricies ligula,', null, $f->getCurrentPoint()->y + 50);
+
 $img = $f->getImage();
 //$img->margin(2);
 
