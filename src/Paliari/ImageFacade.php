@@ -529,4 +529,20 @@ class ImageFacade
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->getImage()->getSize()->width;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHeight()
+    {
+        return $this->getImage()->getSize()->height;
+    }
+
 }
