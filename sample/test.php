@@ -48,10 +48,10 @@ $f->setFontSize(15)->cell(700, 50, "Font Arial(15) OEWIERP INCO", true, true);
 $f->setFontSize(20)->cell(700, 50, "Font Arial(20) OEWIERP INCO", true, true);
 $f->setFontSize(25)->cell(700, 50, "Font Arial(25) OEWIERP INCO", true, true);
 $f->setFont('arialbd');
-$f->setFontSize(10)->cell(700, 50, "Font Arialbd (10) OEWIERP INCO", true, true);
-$f->setFontSize(12)->cell(700, 50, "Font Arialbd (12) OEWIERP INCO", true, true);
-$f->setFontSize(15)->cell(700, 50, "Font Arialbd (15) OEWIERP INCO", true, true);
-$f->setFontSize(20)->cell(0, 50, "Font Arialbd (20) OEWIERP INCO", true, true);
+//$f->setFontSize(10)->cell(700, 50, "Font Arialbd (10) OEWIERP INCO", true, true);
+//$f->setFontSize(12)->cell(700, 50, "Font Arialbd (12) OEWIERP INCO", true, true);
+//$f->setFontSize(15)->cell(700, 50, "Font Arialbd (15) OEWIERP INCO", true, true);
+//$f->setFontSize(20)->cell(0, 50, "Font Arialbd (20) OEWIERP INCO", true, true);
 $f->setFontSize(25)->cell(0, 50, "Font Arialbd (25) OEWIERP INCO", true, true);
 
 $f->setFontSize(15)->cell(0, 35, "Font Arialbd (15) OEWIERP INCO", true, true);
@@ -77,7 +77,8 @@ $f->setFont('arial');
 $f->setFontSize(15)->multCell(0, $text, true);
 
 $f->text('volutpat, sapien id eleifend consequat, magna odio ultricies ligula,', null, $f->getCurrentPoint()->y + 50);
-
+echo $f->getY();
+$f->line(0, $f->getY() + 10, $f->getImage()->getSize()->width, $f->getY() + 10);
 $img = $f->getImage();
 //$img->margin(2);
 

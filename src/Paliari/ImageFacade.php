@@ -421,21 +421,17 @@ class ImageFacade
     }
 
     /**
-     * @param int|Point $x1
-     * @param int|Point $y1
-     * @param int       $x2
-     * @param int       $y2
+     * @param int $x1
+     * @param int $y1
+     * @param int $x2
+     * @param int $y2
      *
      * @return $this
      */
-    public function line($x1, $y1, $x2 = null, $y2 = null)
+    public function line($x1, $y1, $x2, $y2)
     {
-        $p1 = $this->preparePoint($x1, $y1);
-        if ($y1 instanceof Point) {
-            $p2 = $y1;
-        } else {
-            $p2 = $this->preparePoint($x2, $y2);
-        }
+        $p1 = $this->newPoint($x1, $y1);
+        $p2 = $this->newPoint($x2, $y2);
         $this->getImage()->line($p1, $p2, $this->getFontColor());
 
         return $this;
@@ -472,10 +468,21 @@ class ImageFacade
         } else {
             $x     = null === $x ? $this->getCurrentPoint()->x : $x;
             $y     = null === $y ? $this->getCurrentPoint()->y : $y;
-            $point = new Point($x, $y);
+            $point = $this->newPoint($x, $y);
 
             return $point;
         }
+    }
+
+    /**
+     * @param int $x
+     * @param int $y
+     *
+     * @return Point
+     */
+    public function newPoint($x = 0, $y = 0)
+    {
+        return new Point($x, $y);
     }
 
     /**
