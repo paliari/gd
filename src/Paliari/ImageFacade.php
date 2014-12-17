@@ -87,7 +87,7 @@ class ImageFacade
      *
      * @return Image
      */
-    public static function newImage($width, $height)
+    public static function newImage($width, $height = null)
     {
         return new Image($width, $height);
     }
@@ -414,16 +414,47 @@ class ImageFacade
      */
     public function text($text, $x = null, $y = null)
     {
+        $point = $this->preparePoint($x, $y);
+        $this->getImage()->text($text, $point, $this->getFont(), $this->getFontSize(), $this->getFontColor());
+
+        return $this;
+    }
+
+    /**
+     * @param Image|string $src
+     * @param int          $x
+     * @param int          $y
+     *
+     * @return $this
+     */
+    public function copyResampled($src, $x = null, $y = null)
+    {
+        if (is_string($src)) {
+            $src = $this->newImage($src);
+        }
+        $point = $this->preparePoint($x, $y);
+        $this->getImage()->copyResampled($src, $point);
+
+        return $this;
+    }
+
+    /**
+     * @param int|Point $x
+     * @param int       $y
+     *
+     * @return Point
+     */
+    protected function preparePoint($x, $y)
+    {
         if ($x instanceof Point) {
-            $point = $x;
+            return $x;
         } else {
             $x     = null === $x ? $this->getCurrentPoint()->x : $x;
             $y     = null === $y ? $this->getCurrentPoint()->y : $y;
             $point = new Point($x, $y);
-        }
-        $this->getImage()->text($text, $point, $this->getFont(), $this->getFontSize(), $this->getFontColor());
 
-        return $this;
+            return $point;
+        }
     }
 
 }
