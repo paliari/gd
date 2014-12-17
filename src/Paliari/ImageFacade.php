@@ -76,9 +76,20 @@ class ImageFacade
      */
     public static function create($width, $height)
     {
-        static::instance()->setImage(new Image($width, $height));
+        static::instance()->setImage(static::newImage($width, $height));
 
         return static::instance();
+    }
+
+    /**
+     * @param int|resource|Image|array|string $width
+     * @param int                             $height
+     *
+     * @return Image
+     */
+    public static function newImage($width, $height)
+    {
+        return new Image($width, $height);
     }
 
     /**
@@ -385,6 +396,7 @@ class ImageFacade
 
         return $this;
     }
+
     /**
      * @return int
      */
