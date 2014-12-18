@@ -245,7 +245,7 @@ class ImageFacade
         $len  = strlen($text) ?: 1;
         $size = $this->getTextSize($text);
         $wx   = ($size['w'] / $len) ?: 1;
-        $tw   = floor(($w - $this->getCellPadding() * 2) / $wx);
+        $tw   = floor(($w - 20 - $this->getCellPadding() * 2) / $wx);
 
         return wordwrap($text, $tw, "\n", true);
     }
