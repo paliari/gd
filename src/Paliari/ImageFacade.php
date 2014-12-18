@@ -189,16 +189,25 @@ class ImageFacade
      * @param int    $w
      * @param string $text
      * @param bool   $border
+     * @param int    $minH
+     * @param int    $maxH
      *
      * @return $this
      */
-    public function multCell($w, $text, $border = false)
+    public function multCell($w, $text, $border = false, $minH = 0, $maxH = 0)
     {
         $p    = $this->getCurrentPoint();
         $w    = $this->prepareWidth($w);
         $text = $this->prepareText($text, $w);
         $size = $this->getTextSize($text);
-        $h    = $size['h'] + $this->getCellPadding() * 2;
+        $h    = $size['h'];
+        if ($h < $minH) {
+            $h = $minH;
+        } elseif ($maxH && $h > $maxH) {
+            $h    = $maxH;
+            $text = $this->cutText($text, $h, $size['h']);
+        }
+        $h    += $this->getCellPadding() * 2;
         if ($border) {
             $this->getImage()->rectangle(new Rect(new Size($w, $h), $this->current_point));
         }
@@ -215,6 +224,17 @@ class ImageFacade
         $this->nextPoint($w, $h);
 
         return $this;
+    }
+
+    protected function cutText($text, $newH, $oldH)
+    {
+        $lines = explode("\n", $text);
+        $lh    = $oldH / count($lines);
+        $cut   = floor($newH / $lh);
+        array_splice($lines, $cut);
+        $text = implode("\n", $lines) . ' ...';
+
+        return $text;
     }
 
     /**
@@ -245,7 +265,7 @@ class ImageFacade
         $len  = strlen($text) ?: 1;
         $size = $this->getTextSize($text);
         $wx   = ($size['w'] / $len) ?: 1;
-        $tw   = floor(($w - $this->getCellPadding() * 2) / $wx);
+        $tw   = floor(($w - 20 - $this->getCellPadding() * 2) / $wx);
 
         return wordwrap($text, $tw, "\n", true);
     }
@@ -543,6 +563,20 @@ class ImageFacade
     public function getHeight()
     {
         return $this->getImage()->getSize()->height;
+    }
+
+    /**
+     * new line.
+     *
+     * @param int $h in pixels
+     *
+     * @return $this
+     */
+    public function ln($h = 5)
+    {
+        $this->setY($this->getY() + $h)->setX(0);
+
+        return $this;
     }
 
 }
