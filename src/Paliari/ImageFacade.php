@@ -189,16 +189,21 @@ class ImageFacade
      * @param int    $w
      * @param string $text
      * @param bool   $border
+     * @param int    $minH
+     * @param int    $maxH
      *
      * @return $this
      */
-    public function multCell($w, $text, $border = false)
+    public function multCell($w, $text, $border = false, $minH = 0, $maxH = 0)
     {
         $p    = $this->getCurrentPoint();
         $w    = $this->prepareWidth($w);
         $text = $this->prepareText($text, $w);
         $size = $this->getTextSize($text);
         $h    = $size['h'] + $this->getCellPadding() * 2;
+        if ($h < $minH) {
+            $h = $minH;
+        }
         if ($border) {
             $this->getImage()->rectangle(new Rect(new Size($w, $h), $this->current_point));
         }

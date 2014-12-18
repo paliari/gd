@@ -74,7 +74,8 @@ Etiam eget sagittis sem. In quis nibh luctus, posuere nibh nec, consequat augue.
 
 $f->setFont('arial');
 
-$f->setFontSize(15)->multCell(0, $text, true);
+//$f->setFontSize(15)->multCell(0, $text, true);
+$f->setFontSize(15)->multCell(0, 'kajdklfd ladj fldjfalsd', true, 500);
 
 $f->text('volutpat, sapien id eleifend consequat, magna odio ultricies ligula,', null, $f->getCurrentPoint()->y + 50);
 echo $f->getY();
