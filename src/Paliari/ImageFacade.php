@@ -200,10 +200,14 @@ class ImageFacade
         $w    = $this->prepareWidth($w);
         $text = $this->prepareText($text, $w);
         $size = $this->getTextSize($text);
-        $h    = $size['h'] + $this->getCellPadding() * 2;
+        $h    = $size['h'];
         if ($h < $minH) {
             $h = $minH;
+        } elseif ($maxH && $h > $maxH) {
+            $h    = $maxH;
+            $text = $this->cutText($text, $h, $size['h']);
         }
+        $h    += $this->getCellPadding() * 2;
         if ($border) {
             $this->getImage()->rectangle(new Rect(new Size($w, $h), $this->current_point));
         }
@@ -220,6 +224,17 @@ class ImageFacade
         $this->nextPoint($w, $h);
 
         return $this;
+    }
+
+    protected function cutText($text, $newH, $oldH)
+    {
+        $lines = explode("\n", $text);
+        $lh    = $oldH / count($lines);
+        $cut   = floor($newH / $lh);
+        array_splice($lines, $cut);
+        $text = implode("\n", $lines) . ' ...';
+
+        return $text;
     }
 
     /**
