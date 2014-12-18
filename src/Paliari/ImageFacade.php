@@ -545,4 +545,18 @@ class ImageFacade
         return $this->getImage()->getSize()->height;
     }
 
+    /**
+     * new line.
+     *
+     * @param int $h in pixels
+     *
+     * @return $this
+     */
+    public function ln($h = 5)
+    {
+        $this->setY($this->getY() + $h)->setX(0);
+
+        return $this;
+    }
+
 }
