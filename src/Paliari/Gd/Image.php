@@ -461,18 +461,20 @@ class Image
      */
     protected function fixOrientation($filename)
     {
-        $exif = exif_read_data($filename);
-        if (isset($exif['Orientation'])) {
-            switch ($exif['Orientation']) {
-                case 3:
-                    $this->res = imagerotate($this->res, 180, 0);
-                    break;
-                case 6:
-                    $this->res = imagerotate($this->res, -90, 0);
-                    break;
-                case 8:
-                    $this->res = imagerotate($this->res, 90, 0);
-                    break;
+        if (function_exists('exif_read_data')) {
+            $exif = @exif_read_data($filename);
+            if (isset($exif['Orientation'])) {
+                switch ($exif['Orientation']) {
+                    case 3:
+                        $this->res = imagerotate($this->res, 180, 0);
+                        break;
+                    case 6:
+                        $this->res = imagerotate($this->res, -90, 0);
+                        break;
+                    case 8:
+                        $this->res = imagerotate($this->res, 90, 0);
+                        break;
+                }
             }
         }
     }
