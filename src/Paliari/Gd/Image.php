@@ -318,19 +318,38 @@ class Image
      */
     public function flush($ext = null, $quality = 75)
     {
-        if (!$ext) $ext = $this->ext;
-        $ext = strtolower($ext);
-        if ($ext == 'jpg') $ext = 'jpeg';
-        $mime = "image/$ext";
-        ob_start();
-        $this->output($ext, null, $quality);
-        $buffer = ob_get_clean();
+        $mime   = $this->mime($ext);
+        $buffer = $this->content($ext, $quality);
         $size   = strlen($buffer);
         header("Content-Type: $mime");
         header("Content-Length: $size");
         echo $buffer;
 
         return $this;
+    }
+
+    protected function mime($ext)
+    {
+        $ext = strtolower($ext ?: $this->ext);
+        if ($ext == 'jpg') $ext = 'jpeg';
+
+        return "image/$ext";
+    }
+
+    /**
+     * @param string $ext
+     * @param int    $quality
+     *
+     * @return string
+     */
+    public function content($ext = null, $quality = 75)
+    {
+        $ext = strtolower($ext ?: $this->ext);
+        ob_start();
+        $this->output($ext, null, $quality);
+        $buffer = ob_get_clean();
+
+        return $buffer;
     }
 
     /**
