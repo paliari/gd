@@ -1,5 +1,4 @@
 <?php
-
 namespace Paliari\Gd;
 
 use RuntimeException,
@@ -82,8 +81,16 @@ class Image
         if (is_numeric($width)) {
             $this->fill($this->bg);
         }
-        imagesavealpha($this->res, true);
-        imagealphablending($this->res, false);
+    }
+
+    public function setSaveAlpha($alpha = true)
+    {
+        imagesavealpha($this->res, $alpha);
+    }
+
+    public function setAlphaBlending($alpha = false)
+    {
+        imagealphablending($this->res, $alpha);
     }
 
     /**
