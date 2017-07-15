@@ -83,6 +83,16 @@ class Image
         }
     }
 
+    public function setSaveAlpha($alpha = true)
+    {
+        imagesavealpha($this->res, $alpha);
+    }
+
+    public function setAlphaBlending($alpha = false)
+    {
+        imagealphablending($this->res, $alpha);
+    }
+
     /**
      * Statically sends a image file to the browser
      */
