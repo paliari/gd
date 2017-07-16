@@ -262,7 +262,7 @@ class Image
      */
     public function resize($size)
     {
-        return $this->copyResized(new static($size, $this->ext));
+        return $this->copyResized($this->newImageResize($size));
     }
 
     /**
@@ -272,7 +272,60 @@ class Image
      */
     public function resample($size)
     {
-        return $this->copyResampledPart(new static($size, $this->ext));
+        return $this->copyResampledPart($this->newImageResize($size));
+    }
+
+    /**
+     * @param Size $size
+     *
+     * @return Image
+     */
+    public function newImageResize($size)
+    {
+        $img = new static($size, $this->ext);
+        if ($this->isPng()) {
+            $img->setAlphaBlending(false);
+            $img->setSaveAlpha(true);
+        }
+
+        return $img;
+    }
+
+    /**
+     * @param Size $size
+     *
+     * @return Image
+     */
+    public function thumb($size)
+    {
+        $size = $this->getSize()->fit($size);
+
+        return $this->copyResampledPart($this->newImageResize($size));
+    }
+
+    /**
+     * @param Size $size
+     *
+     * @return Image
+     */
+    public function thumbFill($size)
+    {
+        $new = $this->newImageResize($size);
+        if ($this->isPng()) {
+            $new->bg->alpha = 0;
+        }
+        $new->fill($new->bg);
+        $point      = new Point();
+        $thumb_size = $this->getSize()->fit($size);
+        $point->x   = abs($size->width - $thumb_size->width) / 2;
+        $point->y   = abs($size->height - $thumb_size->height) / 2;
+
+        return $new->copyResampled($this, $point, $thumb_size);
+    }
+
+    protected function isPng()
+    {
+        return 'png' == $this->ext;
     }
 
     /**
