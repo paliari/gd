@@ -60,6 +60,24 @@ class Size
     }
 
     /**
+     * @param Size $target
+     *
+     * @return Size
+     */
+    public function cover($target)
+    {
+        if ($this->getRatio() < $target->getRatio()) {
+            $width  = $target->width;
+            $height = $width / $this->getRatio();
+        } else {
+            $height = $target->height;
+            $width  = $height * $this->getRatio();
+        }
+
+        return new static($width, $height);
+    }
+
+    /**
      * @param float $times
      *
      * @return static

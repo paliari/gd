@@ -1,4 +1,5 @@
 <?php
+
 namespace Paliari\Gd;
 
 use RuntimeException,
@@ -296,11 +297,54 @@ class Image
      *
      * @return Image
      */
-    public function thumb($size)
+    public function thumbFit($size)
     {
         $size = $this->getSize()->fit($size);
 
         return $this->copyResampledPart($this->newImageResize($size));
+    }
+
+    /**
+     * @param Size $size
+     *
+     * @return Image
+     */
+    public function thumb($size)
+    {
+        return $this->crop($size);
+    }
+
+    /**
+     * @param Size $size
+     *
+     * @return bool|Image
+     */
+    public function crop($size)
+    {
+        $img = $this->resample($this->getSize()->cover($size));
+        if ($this->getSize()->getRatio() == $size->getRatio()) {
+            return $img;
+        }
+        $w   = $h = min($size->width, $size->height);
+        $x   = ($img->getSize()->width - $w) / 2;
+        $y   = ($img->getSize()->height - $h) / 2;
+        $res = $this->doCrop($img->res, $x, $y, $w, $h);
+
+        return false === $res ? $res : new Image($res);
+    }
+
+    /**
+     * @param resource $res
+     * @param int      $x
+     * @param int      $y
+     * @param int      $width
+     * @param int      $height
+     *
+     * @return bool|resource
+     */
+    protected function doCrop($res, $x, $y, $width, $height)
+    {
+        return imagecrop($res, ['x' => $x, 'y' => $y, 'width' => $width, 'height' => $height]);
     }
 
     /**
