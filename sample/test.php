@@ -5,6 +5,22 @@ use Paliari\Gd\Image,
 
 require_once "../vendor/autoload.php";
 
+
+
+echo "\n";
+
+$w = 400;
+$h = 100;
+$src = '../tmp/img.jpeg';
+$thumb_name = '../tmp/img-thumb.jpg';
+$img = new \Paliari\Gd\Image($src);
+$size  = new \Paliari\Gd\Size($w, $h);
+$thumb = $img->thumb($size);
+$thumb->save($thumb_name);
+
+echo "\n";
+exit;
+
 /*$discriminacao = " SERVICOS EXEMPLO - R$  1000.00
  REFERENTE AO VENCIMENTO: 12/2010 SERVICOS EXEMPLO - R$  1000.00 REFERENTE AO VENCIMENTO: 12/2010 SERVICOS EXEMPLO - R$  1000.00 REFERENTE AO VENCIMENTO: 12/2010 SERVICOS EXEMPLO - R$  1000.00 REFERENTE AO VENCIMENTO: 12/2010 SERVICOS EXEMPLO - R$  1000.00 REFERENTE AO VENCIMENTO: 12/2010 SERVICOS EXEMPLO - R$  1000.00 REFERENTE AO VENCIMENTO: 12/2010 SERVICOS EXEMPLO - R$  1000.00 REFERENTE AO VENCIMENTO: 12/2010 SERVICOS EXEMPLO - R$  1000.00 REFERENTE AO VENCIMENTO: 12/2010 SERVICOS EXEMPLO - R$  1000.00
  REFERENTE AO VENCIMENTO: 12/2010 SERVICOS EXEMPLO - R$  1000.00

@@ -325,10 +325,9 @@ class Image
         if ($this->getSize()->getRatio() == $size->getRatio()) {
             return $img;
         }
-        $w   = $h = min($size->width, $size->height);
-        $x   = ($img->getSize()->width - $w) / 2;
-        $y   = ($img->getSize()->height - $h) / 2;
-        $res = $this->doCrop($img->res, $x, $y, $w, $h);
+        $x   = ($img->getSize()->width - $size->width) / 2;
+        $y   = ($img->getSize()->height - $size->height) / 2;
+        $res = $this->doCrop($img->res, $x, $y, $size->width, $size->height);
 
         return false === $res ? $res : new Image($res);
     }
