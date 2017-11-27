@@ -297,11 +297,21 @@ class Image
      *
      * @return Image
      */
-    public function thumb($size)
+    public function thumbFit($size)
     {
         $size = $this->getSize()->fit($size);
 
         return $this->copyResampledPart($this->newImageResize($size));
+    }
+
+    /**
+     * @param Size $size
+     *
+     * @return Image
+     */
+    public function thumb($size)
+    {
+        return $this->crop($size);
     }
 
     /**
